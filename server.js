@@ -6,6 +6,7 @@ const app = express();
 mongoose.set("strictQuery", false);
 mongoose.connect("mongodb://localhost/blog", {
   useNewUrlParser: true,
+  useUnifiedTopology: true,
 });
 
 app.set("view engine", "ejs");
