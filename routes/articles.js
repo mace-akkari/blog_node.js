@@ -6,9 +6,10 @@ router.get("/new", (req, res) => {
   res.render("articles/new", { article: new Article() });
 });
 
-router.get("/:id", (req, res) => {
-  const article = Article.findById(req.params.id);
-  res.send(req.params.id);
+router.get("/:id", async (req, res) => {
+  const article = await Article.findById(req.params.id);
+  if (article == null) res.redirect("/");
+  res.render("articles/show", { article });
 });
 
 router.post("/", async (req, res) => {
@@ -19,9 +20,10 @@ router.post("/", async (req, res) => {
   });
 
   try {
-    await article.save();
+    article = await article.save();
     res.redirect(`/articles/${article.id}`);
-  } catch (e) {
+  } catch (err) {
+    console.log("Error Message:", err);
     res.render("articles/new", { article });
   }
 });
